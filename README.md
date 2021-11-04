@@ -4,33 +4,16 @@ The included MATLAB and Python packages implement efficient algorithms for bound
 This package reproduces experiments from the paper
 Calder, Park, Slepcev. Boundary Estimation from Point Clouds: Algorithms, Guarantees and Applications (in preparation).
 
-## Installation
 
-To install the Python package, use the package manager [pip](https://pip.pypa.io/en/stable/) to install 
 
-```bash
-pip install graphlearning
-```
-Required packages include numpy, scipy, sklearn, matplotlib, and torch. The packages annoy and kymatio are required for running nearest neighbor searches and the scattering transform, respectively, but the rest of the code will run fine without those packages. These dependencies should install automatically.
 
-To use the MATLAB package, simply download the files under the folder bd_test_MATLAB
+
 
 ## Usage (MATLAB package)
 
-If you already have a point cloud in a Euclidean space and the indices of points you wish to test for boundary, that's also fine! To compute boundary points with test do the following
-```bash
-nvec = estimated_normal(pts,r)
-[bdry_pts,bdry_idx,dists] = bd_Test(pts,test_idx,nvec,eps,r,type)
-```
-here, the arguments are: pts (point cloud), test_idx (indices we wish to test for the boundary) r (neighborhood radius), eps (thickness of the boundary region we want to identify). Outputs are bdry_pts (boundary points), bdry_idx (indices of boundary points, as a subset of pts), and dists (estimated distances of tested points).
+To use the MATLAB package, simply download the files under the folder bd_test_MATLAB.
 
-If you have a point cloud that lies in some lower-dimensional manifold embedded in a Euclidean space, instaed of bd_test, use bd_test_manif in the following way
-```bash
-[bdry_pts,bdry_idx,dists] = bd_Test_manif(pts,test_idx,nvec,eps,r)
-```
-to obtain the same output.
-
-If you would like to run some quick examples in a Euclidean space, use the function distballann_norm instead. You can call the function by
+1. If you would like to run some quick examples in a Euclidean space, use the function distballann_norm instead. You can call the function by
 ```bash
 [BP1,BP2,dtb, dtb2] = distballann_norm(n,r,L, eps, domain,dim)
 ```
@@ -44,6 +27,21 @@ Another example for the annulus, is
 distballann_norm(9000,0.18,2,0.03, 2, 3)
 ```
 This function will also output a plot of true distance (black) versus dtb (blue hollow dots) and dtb2 (red hollow dots) .
+
+
+2. If you already have a point cloud in a Euclidean space and the indices of points you wish to test for boundary, that's also fine! To compute boundary points with test do the following
+```bash
+nvec = estimated_normal(pts,r)
+[bdry_pts,bdry_idx,dists] = bd_Test(pts,test_idx,nvec,eps,r,type)
+```
+here, the arguments are: pts (point cloud), test_idx (indices we wish to test for the boundary) r (neighborhood radius), eps (thickness of the boundary region we want to identify). Outputs are bdry_pts (boundary points), bdry_idx (indices of boundary points, as a subset of pts), and dists (estimated distances of tested points).
+
+If you have a point cloud that lies in some lower-dimensional manifold embedded in a Euclidean space, instaed of bd_test, use bd_test_manif in the following way
+```bash
+[bdry_pts,bdry_idx,dists] = bd_Test_manif(pts,test_idx,nvec,eps,r)
+```
+to obtain the same output.
+
 
 ## Contact and questions
 Please email sangminp@andrew.cmu.edu with any quesitons or comments.
