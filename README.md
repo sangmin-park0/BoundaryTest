@@ -49,9 +49,9 @@ Please email sangminp@andrew.cmu.edu with any quesitons or comments.
 ## Acknowledgements
 Following people have contributed to the development of this software:
 
-1. Jeff Calder (Associate Professor, University of Minnesota)
+1. Jeff Calder (University of Minnesota)
 
-2. Dejan Slepčev (Professor, Carnegie Mellon University)
+2. Dejan Slepčev (Carnegie Mellon University)
 
 ## License
 [MIT](https://choosealicense.com/licenses/mit/)
