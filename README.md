@@ -1,7 +1,7 @@
 # BoundaryTest
-The included MATLAB and Python packages implement efficient algorithms for boundary detection and normal vector estimation given a point cloud.
+Included are MATLAB and Python packages, each of which implement efficient algorithms for boundary detection and normal vector estimation given a point cloud.
 
-This package reproduces experiments from the paper
+This package implements algorithms described in the paper
 Calder, Park, Slepcev. Boundary Estimation from Point Clouds: Algorithms, Guarantees and Applications (in preparation).
 
 
