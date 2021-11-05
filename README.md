@@ -46,7 +46,7 @@ If you have a point cloud that lies in some lower-dimensional manifold embedded 
 ```bash
 [bdry_pts,bdry_idx,dists] = bd_Test_manif(pts,nvec,eps,r,test_idx)
 ```
-to obtain the same output. Here test_idx is optional, and default setting tests all points. In the manifold setting, the algorithm uses only the 2nd order test.
+to obtain the same output. Again, test_idx is an optional argument, and default setting tests all points. In the manifold setting, the algorithm uses only the 2nd order test.
 
 
 ## Contact and questions
