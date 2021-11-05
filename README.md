@@ -27,21 +27,24 @@ Another example for the annulus, is
 ```bash
 distballann_norm(9000,0.18,2,0.03, 2, 3)
 ```
-This function will also output a plot of true distance (black) versus dtb (blue hollow dots) and dtb2 (red hollow dots) .
+This function will also output the following plots:
+- plot of true distance (black) versus dtb (blue hollow dots) and dtb2 (red hollow dots)
+- if the dimension is 2, the plot of the point cloud (black) and the boundary points from the 2nd order test (red hollow dots)
 
 
 2. If you already have a point cloud in a Euclidean space and the indices of points you wish to test for boundary, that's also fine! To compute boundary points with test do the following
 ```bash
 nvec = estimated_normal(pts,r)
-[bdry_pts,bdry_idx,dists] = bd_Test(pts,test_idx,nvec,eps,r,type)
+[bdry_pts,bdry_idx,dists] = bd_Test(pts,nvec,eps,r,test_type,test_idx)
 ```
-here, the arguments are: pts (point cloud), test_idx (indices we wish to test for the boundary) r (neighborhood radius), eps (thickness of the boundary region we want to identify). Outputs are bdry_pts (boundary points), bdry_idx (indices of boundary points, as a subset of pts), and dists (estimated distances of tested points).
+here, the input arguments are: pts (point cloud), r (neighborhood radius), eps (thickness of the boundary region we want to identify), test_type (type of the test: 1 for 1st order, 2 for 2nd order; optional, and default value=2) test_idx (indices we wish to test for the boundary;optional, and default setting tests all points). 
+Outputs are bdry_pts (boundary points), bdry_idx (indices of boundary points, as a subset of pts), and dists (estimated distances of tested points).
 
 If you have a point cloud that lies in some lower-dimensional manifold embedded in a Euclidean space, instaed of bd_test, use bd_test_manif in the following way
 ```bash
-[bdry_pts,bdry_idx,dists] = bd_Test_manif(pts,test_idx,nvec,eps,r)
+[bdry_pts,bdry_idx,dists] = bd_Test_manif(pts,nvec,eps,r,test_idx)
 ```
-to obtain the same output.
+to obtain the same output. Here test_idx is optional, and default setting tests all points. In the manifold setting, the algorithm uses only the 2nd order test.
 
 
 ## Contact and questions
