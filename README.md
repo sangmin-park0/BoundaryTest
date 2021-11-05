@@ -14,7 +14,7 @@ Calder, Park, Slepcev. Boundary Estimation from Point Clouds: Algorithms, Guaran
 
 To use the MATLAB package, simply download the files under the folder bd_test_MATLAB.
 
-1. If you would like to run some quick examples in a Euclidean space, use the function distballann_norm instead. You can call the function by
+1. If you would like to run some quick examples in a Euclidean space, use the function distballann_norm. You can call the function by
 ```bash
 [BP1,BP2,dtb, dtb2] = distballann_norm(n,r,L, eps, domain,dim)
 ```
