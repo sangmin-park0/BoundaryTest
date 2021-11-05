@@ -1,4 +1,4 @@
-function [boundary_points,boundary_index,distances] = bd_Test_manif(point_cloud,test_index,normal_vectors,eps,r)
+function [boundary_points,boundary_index,distances] = bd_Test_manif(point_cloud,normal_vectors,eps,r,test_index)
 %%Given a point cloud and estimated normal vectors, computes the points
 %%within e distance of the boundary with high probability. Outputs boundary
 %%points, indices of the boundary points, and their estimated distance to
@@ -18,10 +18,29 @@ function [boundary_points,boundary_index,distances] = bd_Test_manif(point_cloud,
 %boundary_index - indices of boundary points, as a subset of point_cloud
 %distances - estimated distances of points tested, according to test_index
     
-    normal_vectors=normr(normal_vectors);
-
-    boundary_index=[];
     point_cloud_idx=(1:length(point_cloud)).';
+    %set default values for type and test_index
+    if nargin > 5
+    error('bd_Test:TooManyInputs', ...
+        'requires at most 1 optional inputs');
+    elseif nargin<4
+    error('bd_Test:NotEnoughInputArguments', ...
+        'requires at least 4 inputs');
+    end
+
+    % Fill in unset optional values.
+    switch nargin
+        case 4
+            test_index=point_cloud_idx;
+        case 5
+            test_index=point_cloud_idx;
+    end
+    
+    suff=1;
+    threshold=(3/2)*eps;
+    
+    normal_vectors=normr(normal_vectors);
+    boundary_index=[];
     idx=rangesearch(point_cloud,point_cloud,r);
     distances=zeros(length(point_cloud),1);
     for j=1:length(test_index)
@@ -74,12 +93,12 @@ function [boundary_points,boundary_index,distances] = bd_Test_manif(point_cloud,
         
         distances(j)=dist_est_sharp;
 
-        if(size(bpoint_cloud,1)<2)%somewhat arbitrary...
+        if(size(bpoint_cloud,1)<5)%insufficient number of points
            Test=0;
-           fprintf("Insufficient number of points");
+           suff=0;
         else        
                 %Test for boundary point
-            threshold=(3/2)*eps;
+            
             if(dist_est_sharp>threshold)
             %if(dist_est_firstorder>threshold)
                 Test=0;
@@ -92,7 +111,7 @@ function [boundary_points,boundary_index,distances] = bd_Test_manif(point_cloud,
             boundary_index=[boundary_index,i];
         end
 
-        disp([j,length(test_index)]);
+        %disp([j,length(test_index)]);
    
     end
     
@@ -101,5 +120,9 @@ function [boundary_points,boundary_index,distances] = bd_Test_manif(point_cloud,
         boundary_points=point_cloud(boundary_index,:);
     else
         boundary_points=point_cloud(boundary_index,:);
+    end
+    
+    if(suff==0)
+        fprintf("Some points have not enough neighbors\n");
     end
 end

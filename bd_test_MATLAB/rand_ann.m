@@ -67,5 +67,5 @@ for i=1:size(Y,1)
 end
     Y=Y(1:num_all,:);
     Y_test_idx=find(sum((Y-R).^2,2)<R2^2*ones(size(Y,1),1));
-    disp(num_all);
+    %disp(num_all);
 end

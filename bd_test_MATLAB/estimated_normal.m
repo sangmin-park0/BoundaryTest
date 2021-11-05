@@ -31,7 +31,7 @@ function nvec = estimated_normal(point_cloud,r)
         diff_mat=ball_points-repmat(ref_point,length(ball_points(:,1)),1);
         est_normal=sum(weights.*diff_mat,1);
         
-        disp([j,length(point_cloud)]);
+        %disp([j,length(point_cloud)]);
         nvec(j,:)=est_normal;
         
     end

@@ -43,12 +43,12 @@ switch domain
         
         nvec=estimated_normal(X,r); nvec=normr(nvec);
         nveca=estimated_normal(X,r); nveca=normr(nveca);
-        test_idx=(1:length(X)).';
-        [~,~,dtb]=bd_Test(X,test_idx,nvec,eps,r,1);    
-        [~,~,dtb2]=bd_Test(X,test_idx,nveca,eps,r,2);
+        %test_idx=(1:length(X)).';
+        [BP1,~,dtb]=bd_Test(X,nvec,eps,r,1);    
+        [BP2,~,dtb2]=bd_Test(X,nveca,eps,r);
 
         truedist=R-vecnorm(X,2,2); 
-       
+        
        
     case 2  % annulus 
        % To have the same density on the annulus A(0,1,1.6) one needs 
@@ -60,13 +60,14 @@ switch domain
         [X,~]=rand_ann(L,R,n,3,dim);
         X=X-2*R;
         
-        test_idx=(1:length(X)).';
+        
         nvec=estimated_normal(X,r); nvec=normr(nvec);
         nveca=estimated_normal(X,r); nveca=normr(nveca);
-        [BP1,~,dtb]=bd_Test(X,test_idx,nvec,eps,r,1);
-        [BP2,~,dtb2]=bd_Test(X,test_idx,nveca,eps,r,2);
+        [BP1,~,dtb]=bd_Test(X,nvec,eps,r,1);
+        [BP2,~,dtb2]=bd_Test(X,nveca,eps,r);
         
-       truedist=vecnorm(X,2,2)-R; 
+        truedist=vecnorm(X,2,2)-R; 
+       
 end
 
 auX=vecnorm(X,2,2);
@@ -101,6 +102,21 @@ line([eps,eps],[1.5*eps,5*eps],'Color','k','LineWidth',2);
 line([2*eps,2*eps],[0,1.5*eps],'Color','k','LineWidth',2);
 line([2*eps,3.3*eps],[1.5*eps,1.5*eps],'Color','k','LineWidth',2);
 legend([p1,p3],'1st','2nd','Location','nw','FontSize',30);
+axis tight
+
+if size(X,2)==2
+    figure('Renderer', 'painters', 'Position', [10 10 1000 800])
+    plot(X(:,1),X(:,2),'.','Color','k','MarkerSize',4);
+    hold on
+    plot(BP2(:,1),BP2(:,2),'o','Color','r','MarkerSize',8);
+    a = get(gca,'XTickLabel');  
+    set(gca,'XTickLabel',a,'fontsize',14);
+    set(gca,'XTickLabelMode','auto');
+    axis equal
+    axis tight
+    hold off
+    %legend('t<eps ','eps<t<2eps','n2nd','Location','nw','FontSize',14);
+end
 
 end
 

@@ -38,7 +38,7 @@ graph=graph_noise;
 hem_idx=(1:length(hemisphere)).';
 
 nveca=estimated_normal(graph,r); 
-[BP,BI]=bd_Test_manif(graph,graph_idx,nveca,eps,r);
+[BP,BI]=bd_Test_manif(graph,nveca,eps,r);
 
 
 figure('Renderer', 'painters', 'Position', [10 10 1000 800])
