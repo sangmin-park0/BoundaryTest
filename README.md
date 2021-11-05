@@ -19,7 +19,8 @@ To use the MATLAB package, simply download the files under the folder bd_test_MA
 [BP1,BP2,dtb, dtb2] = distballann_norm(n,r,L, eps, domain,dim)
 ```
 Input arguments are: n (number of points), r (test radius), L (Lipschitz constant of the density from which the points are randomly sampled), eps (boundary thickness), domain (type of domain; 1 for a ball and 2 for an annulus), dim (dimension of the domain).
-BP1, BP2 are the boundary points according to 1st order and 2nd order tests as described in the paper, dtb and dtb2 are the estimated distances from each point to the boundary, again according to 1st and 2nd order tests respectively. As an example, the following code
+
+Outputs are: BP1 and BP2 (boundary points according to 1st order and 2nd order tests respectively, as described in the paper), dtb and dtb2 (the estimated distances from each point to the boundary, again according to 1st and 2nd order tests respectively). For example, the following code
 ```bash
 distballann_norm(3000,0.18,2,0.03, 1, 3)
 ```
