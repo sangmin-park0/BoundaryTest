@@ -16,7 +16,7 @@ git clone git@github.com:sangmin-park0/BoundaryTest
 git clone https://github.com/sangmin-park0/BoundaryTest
 ```
 
-depending on if prefer ssh (first) or https (second).
+depending on whether you prefer ssh (first) or https (second).
 
 
 ## Usage (MATLAB package)
