@@ -73,7 +73,7 @@ import numpy as np
 import graphlearning as gl
 
 n = 5000
-X = numpy.random.rand(n,2)  
+X = np.random.rand(n,2)  
 
 r = 0.1    #Radius for boundary statistic
 eps = 0.02 #Size of boundary tube to detect
