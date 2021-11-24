@@ -59,11 +59,9 @@ to obtain the same output. Again, test_idx is an optional argument, and default 
 
 ## Usage (Python)
 
-The Python boundary statistic is implemented in the [GraphLearning](https://github.com/jwcalder/GraphLearning) Python package. Install the development version of GraphLearning from GitHub
+The Python boundary statistic is implemented in the [GraphLearning](https://github.com/jwcalder/GraphLearning) Python package, which can be installed with the command
 ```
-git clone https://github.com/jwcalder/GraphLearning
-cd GraphLearning
-python setup.py install --user
+pip install graphlearning
 ```
 The other required package is [Annoy](https://github.com/spotify/annoy) for fast approximate nearest neighbor searches, which should be automatically installed during the graph learning install. The 3D visualizations from our paper are generated with the [Mayavi](https://docs.enthought.com/mayavi/mayavi/) package. Mayavi can be difficult to install and currently has many issues, so any Python code related to Mayavi is commented out. If you have a working Mayavi installation, you can uncomment that code at your convenience to generate 3D visualizations of the solutions to PDEs on point clouds.
 
