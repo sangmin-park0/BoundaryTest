@@ -65,35 +65,25 @@ pip install graphlearning
 ```
 The other required package is [Annoy](https://github.com/spotify/annoy) for fast approximate nearest neighbor searches, which should be automatically installed during the graph learning install. The 3D visualizations from our paper are generated with the [Mayavi](https://docs.enthought.com/mayavi/mayavi/) package. Mayavi can be difficult to install and currently has many issues, so any Python code related to Mayavi is commented out. If you have a working Mayavi installation, you can uncomment that code at your convenience to generate 3D visualizations of the solutions to PDEs on point clouds.
 
-The main function for computing the boundary statistic is [`graphlearning.boundary_statistic`](https://github.com/jwcalder/GraphLearning/blob/aca2d48fa4a1772cfa998aaf1b5c2384dc2b61e7/graphlearning/graphlearning.py#L877). Below is an example showing how to finding boundary points from a random point cloud on the unit box in two dimensions.
-```
+The main function for computing the boundary statistic is [`graphlearning.utils.boundary_statistic`](https://jwcalder.github.io/GraphLearning/utils.html#graphlearning.utils.boundary_statistic). Below is an example showing how to finding boundary points from a random point cloud on the unit box in two dimensions.
+```py
 import numpy as np
 import graphlearning as gl
+import matplotlib.pyplot as plt
 
 n = 5000
 X = np.random.rand(n,2)  
 
 r = 0.1    #Radius for boundary statistic
 eps = 0.02 #Size of boundary tube to detect
-S = gl.boundary_statistic(X,r)
+S = gl.utils.boundary_statistic(X,r)
 bdy_pts = np.arange(n)[S < 3*eps/2]  #Boundary test to find boundary points
+
+plt.scatter(X[:,0],X[:,1], s=2)
+plt.scatter(X[bdy_pts,0],X[bdy_pts,1], c='r', s=2)     
+plt.show()   
 ```
-The full usage of `graphlearning.boundary_statistic` is copied below for convenience, and the Python folder has scripts for running the experiments from our paper concerned with solving PDEs on point clouds and detecting the boundary and depth of MNIST images. The only required arguments are `X` and `r`. Note that the function supports using a rangesearch or knnsearch for neighborhood identification for the test.
-```
-def boundary_statistic(X,r,knn=False,ReturnNormals=False,SecondOrder=True,CutOff=True,I=None,J=None,D=None):
-    """Computes boundary detection statistic
-    Args:
-        X: nxd point cloud of points in dimension d
-        r: radius for test (or number of neighbors if knn=True)
-        knn: Use knn version of test (interprets r as number of neighbors)
-        ReturnNormals: Whether to return normal vectors as well
-        SecondOrder: Use second order test
-        CutOff: Whether to use CutOff for second order test.
-        I,J,D: Output of knnsearch (Optional, improves runtime if already available)
-    Returns:
-        Length n numpy array of test statistic. If ReturnNormals=True, then normal vectors are return as a second argument.
-    """
-```
+The full usage of `graphlearning.boundary_statistic` is in the graphlearning package documentation [here](https://jwcalder.github.io/GraphLearning/utils.html#graphlearning.utils.boundary_statistic).  The only required arguments are `X` and `r`. Note that the function supports using a rangesearch or knnsearch for neighborhood identification for the test.
 
 ## Contact and questions
 Please email sangminp@andrew.cmu.edu with any questions or comments.

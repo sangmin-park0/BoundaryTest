@@ -9,12 +9,14 @@ import scipy.sparse as sparse
 import sys, time
 from joblib import Parallel, delayed
 
+from robin import robin_bc_matrix
+
 def one_trial(T):
     for i in range(10,18):
         #data
         n = 2**i
         eps = (1/4)*(np.log(n)/n)**(1/6)
-        X = gl.rand_ball(n,2)
+        X = gl.utils.rand_ball(n,2)
 
         #Compute exact solution of PDE
         x = X[:,0]
@@ -38,22 +40,22 @@ def one_trial(T):
 
         #Find boundary points
         k = int(2*np.pi*n*eps**2)
-        S,nu = gl.boundary_points(X,k,ReturnNormals=True)
+        S,nu = gl.utils.boundary_statistic(X,k,return_normals=True)
         ind = np.arange(n)
         ind_bdy = ind[S < 3*eps/2]
         num_bdy = len(ind)
 
         #Weight matrix
-        W = gl.eps_weight_matrix(X,eps)
+        W = gl.weightmatrix.epsilon_ball(X,eps)
 
         #Robin matrix
-        R = gl.robin_bc_matrix(X,nu,eps,gamma)
+        R = robin_bc_matrix(X,nu,eps,gamma)
 
         #Graph Laplacian matrix
-        L = 2*gl.graph_laplacian(W)/(sigma*n*eps**4)
+        L = 2*gl.graph(W).laplacian()/(sigma*n*eps**4)
 
         #Solve Robin problem
-        u = gl.gmres_bc_solve(L,f,R,g,ind_bdy)
+        u = gl.utils.constrained_solve_gmres(L,f,R,g,ind_bdy)
 
         #Compute error and print to screen
         err = np.max(np.absolute(u-u_true))

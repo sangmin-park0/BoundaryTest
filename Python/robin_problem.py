@@ -6,10 +6,12 @@ import scipy.spatial as spatial
 import scipy.sparse as sparse
 import sys, time
 
+from robin import robin_bc_matrix
+
 #data
 n = 5000  #Need at least 20000 points to start to see good approximation ability
 eps = (1/4)*(np.log(n)/n)**(1/6)
-X = gl.rand_ball(n,2)
+X = gl.utils.rand_ball(n,2)
 
 #Compute exact solution of PDE and Hessian
 x = X[:,0]
@@ -29,19 +31,19 @@ g = gamma*u_true - (1-gamma)*unu
 
 #Find boundary points
 r = 3*eps
-S,nu = gl.boundary_statistic(X,r,ReturnNormals=True)
+S,nu = gl.utils.boundary_statistic(X,r,return_normals=True)
 bdy_pts = np.arange(n)[S < 3*eps/2]  #Indices of boundary points
 num_bdy = len(bdy_pts)
 
 #Weight matrix and graph Laplacian matrix (properly normalized)
-W = gl.eps_weight_matrix(X,eps)
+W = gl.weightmatrix.epsilon_ball(X,eps)
 r = np.arange(1e5)/1e5
 sigma = np.pi*np.sum((r**3)*np.exp(-4*r**2))/1e5
-L = 2*gl.graph_laplacian(W)/(sigma*n*eps**4)
+L = 2*gl.graph(W).laplacian()/(sigma*n*eps**4)
 
 #Solve Robin problem 
-R = gl.robin_bc_matrix(X,nu,eps,gamma)
-u = gl.gmres_bc_solve(L,f,R,g,bdy_pts)
+R = robin_bc_matrix(X,nu,eps,gamma)
+u = gl.utils.constrained_solve_gmres(L,f,R,g,bdy_pts)
 
 #Compute error
 err = np.max(np.absolute(u-u_true))
@@ -57,7 +59,7 @@ if n <= 10000:
 
 #Mayavi plotting (nice visualizations if you can successfully install mayavi)
 #import mayavi.mlab as mlab
-#Tri = gl.improved_mesh(X)
+#Tri = gl.utils.mesh(X,boundary_improvement=True)
 #mlab.figure(bgcolor=(1,1,1),size=(800,800))
 #mlab.triangular_mesh(X[:,0],X[:,1],u,Tri)
 #mlab.triangular_mesh(X[:,0],X[:,1],u_true,Tri)

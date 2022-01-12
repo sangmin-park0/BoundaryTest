@@ -8,20 +8,20 @@ import sys
 #Random points on the ball
 n = 5000
 eps = (1/4)*(np.log(n)/n)**(1/6)
-X = gl.rand_ball(n,2)
+X = gl.utils.rand_ball(n,2)
 
 #Find boundary points
 r = 3*eps
-S = gl.boundary_statistic(X,r)
+S = gl.utils.boundary_statistic(X,r)
 bdy_pts = np.arange(n)[S < 3*eps/2]  #Indices of boundary points
 num_bdy = len(bdy_pts)
 
 #Weight matrix and graph Laplacian
-W = gl.eps_weight_matrix(X,eps)
-L = gl.graph_laplacian(W)
+W = gl.weightmatrix.epsilon_ball(X,eps)
+L = gl.graph(W).laplacian()
 
 #Compute eigenvector (change the 1 to k to compute k eigenvectors)
-u,vals = gl.dirichlet_eigenvectors(L,bdy_pts,1)
+vals, u = gl.utils.dirichlet_eigenvectors(L,bdy_pts,1)
 u = np.sqrt(n)*u/np.linalg.norm(u)
 if np.min(u) < 0:
     u = -u
@@ -46,7 +46,7 @@ plt.show()
 
 #Mayavi plotting (nice visualizations if you can successfully install mayavi)
 #import mayavi.mlab as mlab
-#Tri = gl.improved_mesh(X)
+#Tri = gl.utils.mesh(X, boundary_improvement=True)
 #mlab.figure(bgcolor=(1,1,1),size=(800,800))
 #mlab.triangular_mesh(x,y,u,Tri)
 #mlab.triangular_mesh(x,y,u_true,Tri)

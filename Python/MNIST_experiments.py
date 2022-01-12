@@ -5,11 +5,10 @@ import matplotlib.pyplot as plt
 import matplotlib.gridspec as gridspec
 import sys
 
-dataset = 'MNIST'
+dataset = 'mnist'
 k = 10
 
-X = gl.load_dataset(dataset)
-labels = gl.load_labels(dataset)
+X, labels = gl.datasets.load(dataset)
 
 #Plotting
 numw = 16
@@ -32,22 +31,21 @@ for label in range(10):
     num = X_sub.shape[0]
 
     #KNN search
-    I,J,D = gl.knnsearch_annoy(X_sub,20*k)
+    knn_data = gl.weightmatrix.knnsearch(X_sub,20*k)
 
     #Detect boundary points
-    S = gl.boundary_statistic(X_sub,20*k,knn=True,I=I,J=J,D=D)
+    S = gl.utils.boundary_statistic(X_sub,20*k,knn=True,knn_data=knn_data)
     ind_boundary = np.argsort(S)
     ind_rand = np.random.choice(X_sub.shape[0],numw)
 
     #Solve PDE on graph for ranking
     num_bdy = int(0.1*num)
-    W = gl.weight_matrix(I,J,D,k)
-    L = gl.graph_laplacian(W,norm="normalized")
-    u,vals = gl.dirichlet_eigenvectors(L,ind_boundary[:num_bdy],1)
+    W = gl.weightmatrix.knn(None,k,knn_data=knn_data)
+    L = gl.graph(W).laplacian(normalization="normalized")
+    vals, u = gl.utils.dirichlet_eigenvectors(L,ind_boundary[:num_bdy],1)
 
-    WD = gl.dist_matrix(I,J,D,k)
-    WD = gl.sparse_max(WD,WD.transpose())
-    v = gl.cDijkstra(WD,ind_boundary[:num_bdy],np.zeros((num_bdy,)))
+    WD = gl.weightmatrix.knn(None,k,knn_data=knn_data,kernel='distance')
+    v = gl.graph(WD).dijkstra(ind_boundary[:num_bdy])
     ind_eigen = np.argsort(-np.absolute(u))
     ind_eikonal = np.argsort(-v)
 
@@ -56,7 +54,7 @@ for label in range(10):
         img = X_sub[ind_boundary[j],:]
         m = int(np.sqrt(img.shape[0]))
         img = np.reshape(img,(m,m))
-        if dataset == 'MNIST':
+        if dataset.lower() == 'mnist':
             img = np.transpose(img)
         axarr_bdy[label,j].imshow(img,cmap='gray')
         axarr_bdy[label,j].axis('off')
@@ -65,7 +63,7 @@ for label in range(10):
         img = X_sub[ind_rand[j],:]
         m = int(np.sqrt(img.shape[0]))
         img = np.reshape(img,(m,m))
-        if dataset == 'MNIST':
+        if dataset.lower() == 'mnist':
             img = np.transpose(img)
         axarr_rand[label,j].imshow(img,cmap='gray')
         axarr_rand[label,j].axis('off')
@@ -74,7 +72,7 @@ for label in range(10):
         img = X_sub[ind_eigen[j],:]
         m = int(np.sqrt(img.shape[0]))
         img = np.reshape(img,(m,m))
-        if dataset == 'MNIST':
+        if dataset.lower() == 'mnist':
             img = np.transpose(img)
         axarr_eigen[label,j].imshow(img,cmap='gray')
         axarr_eigen[label,j].axis('off')
@@ -83,7 +81,7 @@ for label in range(10):
         img = X_sub[ind_eikonal[j],:]
         m = int(np.sqrt(img.shape[0]))
         img = np.reshape(img,(m,m))
-        if dataset == 'MNIST':
+        if dataset.lower() == 'mnist':
             img = np.transpose(img)
         axarr_eikonal[label,j].imshow(img,cmap='gray')
         axarr_eikonal[label,j].axis('off')
