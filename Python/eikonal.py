@@ -28,7 +28,7 @@ plt.show()
 
 #If you can successfully install mayavi, 3D visualization code is below
 #import mayavi.mlab as mlab
-#Tri = gl.mesh(X, boundary_improvement=True)
+#Tri = gl.utils.mesh(X, boundary_improvement=False)
 #mlab.figure(bgcolor=(1,1,1),size=(800,800))
 #mlab.triangular_mesh(X[:,0],X[:,1],u,Tri)
 
